@@ -1,0 +1,6 @@
+streamlit
+pandas
+yfinance
+pandas_ta
+scikit-learn
+joblib
