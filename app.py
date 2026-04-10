@@ -7,7 +7,7 @@ st.set_page_config(page_title="AetherQuant AI", layout="wide")
 st.title("🏹 AetherQuant: AI Trading Dashboard")
 
 
-model = joblib.load("model.pkl")
+model = joblib.load("aether_model.pkl")
 
 ticker = st.sidebar.text_input("Enter Ticker (e.g., BTC-USD)", value="BTC-USD")
 run_btn = st.sidebar.button("Generate Signal")
@@ -27,9 +27,8 @@ if run_btn:
     col3.metric("RSI 14", f"{latest_data['RSI_14'].values[0]:.2f}")
 
     if prediction == 1:
-        if prediction == 1:
-            st.success("🎯 AI SIGNAL: BUY")
-        else:
-            st.error("⚠️ AI SIGNAL: SELL / AVOID")
+        st.success("🎯 AI SIGNAL: BUY")
+    else:
+        st.error("⚠️ AI SIGNAL: SELL / AVOID")
             
         st.dataframe(df.tail(10))

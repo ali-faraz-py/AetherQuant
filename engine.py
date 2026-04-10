@@ -12,6 +12,16 @@ def add_indicators(df):
 
     df = df.dropna()
 
+    bbands = ta.bbands(df['Close'], length=20, std=2)
+
+    bbl_col = [c for c in bbands.columns if 'BBL' in c][0]
+    bbm_col = [c for c in bbands.columns if 'BBM' in c][0]
+    bbu_col = [c for c in bbands.columns if 'BBU' in c][0]
+
+    df['BBL'] = bbands[bbl_col]
+    df['BBM'] = bbands[bbm_col]
+    df['BBU'] = bbands[bbu_col]
+
     return df
 
 
@@ -20,4 +30,5 @@ def get_live_data(ticker):
     df.columns = df.columns.get_level_values(0)
     df = add_indicators(df)
     return df
+
 
