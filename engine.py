@@ -1,35 +1,48 @@
-import pandas_ta as ta
 import yfinance as yf
 import numpy as np
+import pandas as pd
 
 def add_indicators(df):
     if df.empty:
         return df
 
-    df["SMA_20"] = ta.sma(df['Close'], length=20)
-    df["RSI_14"] = ta.rsi(df['Close'], length=14)
-    df['EMA_12'] = ta.ema(df['Close'], length=12)
-    df['EMA_26'] = ta.ema(df['Close'], length=26)
-    df['EMA_50'] = ta.ema(df['Close'], length=50)
+    df['SMA_20'] = df['Close'].rolling(20).mean()
+    df['EMA_12'] = df['Close'].ewm(span=12).mean()
+    df['EMA_26'] = df['Close'].ewm(span=26).mean()
+    df['EMA_50'] = df['Close'].ewm(span=50).mean()
+
+    delta = df['Close'].diff()
+    gain = delta.where(delta > 0, 0).rolling(14).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(14).mean()
+    rs = gain / loss
+    df['RSI_14'] = 100 - (100 / (1 + rs))
+
+    df['MACD'] = df['EMA_12'] - df['EMA_26']
+
+    df['BBM'] = df['Close'].rolling(20).mean()
+    std = df['Close'].rolling(20).std()
+    df['BBU'] = df['BBM'] + (2 * std)
+    df['BBL'] = df['BBM'] - (2 * std)
+    df['BB_width'] = df['BBU'] - df['BBL']
+
+    df['TR'] = np.maximum(
+        df['High'] - df['Low'],
+        np.maximum(
+            abs(df['High'] - df['Close'].shift()),
+            abs(df['Low'] - df['Close'].shift())
+        )
+    )
+    df['ATR'] = df['TR'].rolling(14).mean()
+
+    df['OBV'] = (np.sign(df['Close'].diff()) * df['Volume']).cumsum()
+
+    df['VWAP'] = (df['Close'] * df['Volume']).cumsum() / df['Volume'].cumsum()
+
     df['Momentum'] = df['Close'] - df['Close'].shift(4)
     df['Volatility'] = df['Close'].rolling(10).std()
     df['High_Low_Range'] = df['High'] - df['Low']
     df['Volume_Change'] = df['Volume'].pct_change()
     df['Price_Change'] = df['Close'].pct_change()
-    df['MACD'] = ta.macd(df['Close'])['MACD_12_26_9']
-    df['ATR'] = ta.atr(df['High'], df['Low'], df['Close'])
-    df['OBV'] = ta.obv(df['Close'], df['Volume'])
-    df['VWAP'] = ta.vwap(df['High'], df['Low'],
-                          df['Close'], df['Volume'])
-
-    bbands = ta.bbands(df['Close'], length=20, std=2)
-    bbl_col = [c for c in bbands.columns if 'BBL' in c][0]
-    bbm_col = [c for c in bbands.columns if 'BBM' in c][0]
-    bbu_col = [c for c in bbands.columns if 'BBU' in c][0]
-    df['BBL'] = bbands[bbl_col]
-    df['BBM'] = bbands[bbm_col]
-    df['BBU'] = bbands[bbu_col]
-    df['BB_width'] = df['BBU'] - df['BBL']
     df['EMA_diff'] = df['EMA_12'] - df['EMA_26']
     df['Close_to_SMA'] = df['Close'] / df['SMA_20'] - 1
     df['SMA_diff'] = df['Close'] - df['SMA_20']
