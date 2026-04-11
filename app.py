@@ -13,12 +13,31 @@ st.title("🏹 AetherQuant: AI Trading Dashboard")
 
 pipeline = joblib.load("aether_model.pkl")
 
-st.sidebar.header("⚙️ Settings")
-ticker = st.sidebar.selectbox(
-    "Select Asset",
-    ["BTC-USD", "ETH-USD", "AAPL", "GOOGL", "TSLA"]
-)
-run_btn = st.sidebar.button("🚀 Generate Signal")
+with st.sidebar:
+    st.selectbox(
+        "Select Asset",
+        ["BTC-USD", "ETH-USD", "AAPL", "GOOGL", "TSLA"],
+        key="ticker"
+    )
+    run_btn = st.button("🚀 Generate Signal",
+                         use_container_width=True)
+    st.divider()
+    st.markdown("#### 📊 Model Info")
+
+    info = {
+        "🤖 Model": "XGBoost",
+        "🎯 Accuracy": "58.52%",
+        "📐 Features": "22",
+        "📅 Training": "2 Years"
+    }
+
+    for key, value in info.items():
+        col1, col2 = st.columns([1.5, 1])
+        col1.markdown(f"**{key}**")
+        col2.markdown(value)
+
+
+ticker = st.session_state.ticker
 
 FEATURES = [
     'Close', 'SMA_20', 'RSI_14',
@@ -74,6 +93,39 @@ if run_btn:
     fig.update_layout(title=f"{ticker} Price Chart")
     st.plotly_chart(fig, use_container_width=True)
 
-    st.dataframe(df.tail(10))
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(
+        x=df.index, y=df['RSI_14'],
+        name='RSI', line=dict(color='purple')
+    ))
+    fig2.add_hline(y=70, line_dash="dash",
+                   line_color="red",
+                   annotation_text="Overbought")
+    fig2.add_hline(y=30, line_dash="dash",
+                   line_color="green",
+                   annotation_text="Oversold")
+    fig2.update_layout(title="RSI Indicator")
+    st.plotly_chart(fig2, use_container_width=True)
+
+    df['Signal'] = pipeline.predict(df[FEATURES])
+    df['Signal_Label'] = df['Signal'].map(
+        {1: '🟢 BUY', 0: '🔴 SELL'}
+    )
+
+
+    if '-USD' in ticker or '-' in ticker:
+        display_cols = ['Close', 'RSI_14', 
+                        'SMA_20', 'Signal_Label']
+    else:
+        display_cols = ['Close', 'RSI_14', 
+                        'SMA_20', 'Volume', 
+                        'Signal_Label']
+
+    st.subheader("📋 Recent Signals")
+    st.dataframe(
+        df[display_cols].tail(10),
+        use_container_width=True
+    )
+
 
 st.caption("⚠️ Educational purposes only. Not financial advice!")
