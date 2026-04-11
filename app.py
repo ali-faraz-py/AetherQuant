@@ -3,6 +3,8 @@ import joblib
 import numpy as np
 import plotly.graph_objects as go
 from engine import get_live_data
+import os
+
 
 st.set_page_config(
     page_title="AetherQuant AI",
@@ -11,7 +13,16 @@ st.set_page_config(
 )
 st.title("🏹 AetherQuant: AI Trading Dashboard")
 
-pipeline = joblib.load("aether_model.pkl")
+@st.cache_resource
+def get_model():
+    if not os.path.exists('aether_model.pkl'):
+        from train_model import train_and_save
+        pipeline = train_and_save()
+    else:
+        pipeline = joblib.load('aether_model.pkl')
+    return pipeline
+
+pipeline = get_model()
 
 with st.sidebar:
     st.selectbox(
