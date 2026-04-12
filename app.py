@@ -37,8 +37,8 @@ with st.sidebar:
 
     info = {
         "🤖 Model": "XGBoost",
-        "🎯 Accuracy": "58.52%",
-        "📐 Features": "22",
+        "🎯 Accuracy": "66.81%",
+        "📐 Features": "24",
         "📅 Training": "2 Years"
     }
 
@@ -57,7 +57,8 @@ FEATURES = [
     'EMA_12', 'EMA_26', 'EMA_diff',
     'Momentum', 'Volatility', 'SMA_diff',
     'Close_to_SMA', 'Price_Change',
-    'EMA_50', 'MACD', 'ATR', 'OBV', 'VWAP'
+    'EMA_50', 'MACD', 'ATR', 'OBV', 'VWAP',
+    'Hour', 'DayOfWeek'
 ]
 
 if run_btn:

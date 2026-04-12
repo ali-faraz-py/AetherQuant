@@ -1,3 +1,4 @@
+from sklearn.metrics import accuracy_score
 import yfinance as yf
 import joblib
 import numpy as np
@@ -7,7 +8,7 @@ from sklearn.pipeline import Pipeline
 import xgboost as xgb
 
 def train_and_save():
-    df = yf.download("BTC-USD", period="2y", interval="1h")
+    df = yf.download("BTC-USD", period="730d", interval="1h")
     df.columns = df.columns.get_level_values(0)
 
     df['SMA_20'] = df['Close'].rolling(20).mean()
@@ -49,9 +50,12 @@ def train_and_save():
     df['SMA_diff'] = df['Close'] - df['SMA_20']
 
     df['Target'] = (
-        df['Close'].shift(-1) > df['Close'] * 1.001
+        df['Close'].shift(-1) > df['Close'] * 1.002
     ).astype(int)
     df.dropna(inplace=True)
+
+    df['Hour'] = df.index.hour
+    df['DayOfWeek'] = df.index.dayofweek
 
     FEATURES = [
         'Close', 'SMA_20', 'RSI_14',
@@ -60,7 +64,8 @@ def train_and_save():
         'EMA_12', 'EMA_26', 'EMA_diff',
         'Momentum', 'Volatility', 'SMA_diff',
         'Close_to_SMA', 'Price_Change',
-        'EMA_50', 'MACD', 'ATR', 'OBV', 'VWAP'
+        'EMA_50', 'MACD', 'ATR', 'OBV', 'VWAP',
+        'Hour', 'DayOfWeek'
     ]
 
     X = df[FEATURES]
@@ -74,12 +79,13 @@ def train_and_save():
     X_train = X_train.fillna(X_train.median())
 
     model = xgb.XGBClassifier(
-        n_estimators=300,
-        max_depth=4,
-        learning_rate=0.01,
-        subsample=0.7,
-        colsample_bytree=0.7,
-        min_child_weight=5,
+        n_estimators=500,
+        max_depth=3,
+        learning_rate=0.005,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        min_child_weight=10,
+        gamma=1,
         random_state=42,
         eval_metric='logloss'
     )

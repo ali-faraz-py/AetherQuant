@@ -46,6 +46,9 @@ def add_indicators(df):
     df['EMA_diff'] = df['EMA_12'] - df['EMA_26']
     df['Close_to_SMA'] = df['Close'] / df['SMA_20'] - 1
     df['SMA_diff'] = df['Close'] - df['SMA_20']
+    df['Hour'] = df.index.hour
+    df['DayOfWeek'] = df.index.dayofweek
+
 
     df = df.replace([np.inf, -np.inf], np.nan)
     df = df.dropna()
