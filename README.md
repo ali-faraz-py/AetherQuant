@@ -45,6 +45,8 @@ A professional, machine learning-powered predictive dashboard built with **Pytho
     streamlit run app.py
 
 ## 📂 Project Structure
+
+```text
 AetherQuant/
 ├── app.py              # Streamlit Web Application and UI logic
 ├── engine.py           # Technical indicator and data processing engine
@@ -53,6 +55,7 @@ AetherQuant/
 ├── requirements.txt    # Project dependencies
 ├── .gitignore          # Prevents tracking of temporary files
 └── .gitattributes      # LFS tracking for the model file
+```
 
 ## 🧠 Model Insights
 The model is trained on 730 days of hourly data and currently achieves a **66.81% accuracy rate** on unseen test sets.
