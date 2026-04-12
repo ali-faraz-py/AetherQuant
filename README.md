@@ -10,7 +10,7 @@ A professional, machine learning-powered predictive dashboard built with **Pytho
 ---
 
 ## 📺 Demo Preview
-**[Diabetes Detector Demo](assets/AetherQuant.gif)**
+![Diabetes Detector Demo](assets/AetherQuant.gif)
 
 ---
 
