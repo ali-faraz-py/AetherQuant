@@ -51,13 +51,10 @@ with st.sidebar:
 ticker = st.session_state.ticker
 
 FEATURES = [
-    'Close', 'SMA_20', 'RSI_14',
-    'BBL', 'BBM', 'BBU', 'BB_width',
-    'High_Low_Range', 'Volume_Change',
-    'EMA_12', 'EMA_26', 'EMA_diff',
-    'Momentum', 'Volatility', 'SMA_diff',
-    'Close_to_SMA', 'Price_Change',
-    'EMA_50', 'MACD', 'ATR', 'OBV', 'VWAP',
+    'Close', 'SMA_20', 'RSI_14', 'BBL', 'BBM', 'BBU', 'BB_width',
+    'High_Low_Range', 'Volume_Change', 'EMA_12', 'EMA_26', 'EMA_diff',
+    'Momentum', 'Volatility', 'SMA_diff', 'Close_to_SMA', 'Price_Change',
+    'EMA_50', 'MACD', 'ATR', 'OBV', 'VWAP', 
     'Hour', 'DayOfWeek'
 ]
 
