@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F7F5F1;
+  --foreground: #1F2A37;
+  --surface: #FFFFFF;
+  --accent-buy: #2F7A5C;
+  --accent-sell: #B54A3A;
+  --accent-neutral: #8B93A1;
+  --hairline: rgba(31, 42, 55, 0.12);
+}
+
+[data-theme="dark"] {
+  --background: #12171D;
+  --foreground: #E8E6E1;
+  --surface: #1B222B;
+  --accent-buy: #3F9A72;
+  --accent-sell: #C97662;
+  --accent-neutral: #8B93A1;
+  --hairline: rgba(232, 230, 225, 0.12);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-accent-buy: var(--accent-buy);
+  --color-accent-sell: var(--accent-sell);
+  --color-accent-neutral: var(--accent-neutral);
+  --color-hairline: var(--hairline);
+  --font-display: var(--font-sora);
+  --font-mono: var(--font-plex-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-display), sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
