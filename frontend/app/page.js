@@ -206,24 +206,22 @@ export default function Home() {
     <main className="flex-1 flex flex-col items-center px-6 py-16 md:py-20">
       <ThemeToggle />
 
-      <div className="fixed top-5 left-6 flex items-center gap-4">
-        <span className="font-display text-sm font-semibold tracking-wide">
-          AetherQuant
-        </span>
-        <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-mono text-sm underline opacity-70 hover:opacity-100"
-        >
-          View on GitHub
-        </a>
-      </div>
+      <a
+        href={GITHUB_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed top-5 left-6 font-mono text-sm underline opacity-70 hover:opacity-100"
+      >
+        View on GitHub
+      </a>
 
       <div className="max-w-xl w-full text-center">
-        <h1 className="font-display text-3xl md:text-4xl font-semibold">
-          Market Brief
+        <h1 className="font-display text-4xl md:text-5xl font-bold">
+          AetherQuant
         </h1>
+        <h2 className="font-display text-xl md:text-2xl font-semibold mt-2 opacity-80">
+          Market Brief
+        </h2>
         <p className="font-display text-sm mt-3 opacity-70">
           Live technical-indicator signals from a 24-feature XGBoost model.
         </p>
