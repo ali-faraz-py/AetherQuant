@@ -1,8 +1,0 @@
-streamlit
-yfinance
-pandas
-numpy
-scikit-learn
-xgboost
-plotly
-joblib
