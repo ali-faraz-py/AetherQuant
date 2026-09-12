@@ -9,10 +9,10 @@ app = FastAPI(title="AetherQuant Prediction API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://aether-quant.vercel.app"],
-    allow_origin_regex=r"https://aetherquant.onrender.com/",
+    allow_origins=["http://localhost:3000", "https://aether-quant-blush.vercel.app"],
+    allow_origin_regex=r"https://aether-quant-.*\.vercel\.app",
     allow_methods=["*"],
-    allow_headers=["*"], 
+    allow_headers=["*"],
 )
 
 FEATURES = [
