@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import joblib
-from engine import get_live_data
+from .engine import get_live_data
 
 model = joblib.load("app/aether_model.pkl")
 
