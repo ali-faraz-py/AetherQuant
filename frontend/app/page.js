@@ -217,7 +217,7 @@ export default function Home() {
       </a>
 
       <div className="max-w-xl w-full text-center">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] opacity-50 mb-2">
+        <p className="font-mono text-base md:text-lg font-semibold uppercase tracking-[0.15em] text-accent-buy mb-3">
           AetherQuant
         </p>
         <h1 className="font-display text-3xl md:text-4xl font-semibold">
