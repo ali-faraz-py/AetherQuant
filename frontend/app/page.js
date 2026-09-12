@@ -200,7 +200,6 @@ export default function Home() {
 
   useEffect(() => {
     fetchSignal(ticker);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
