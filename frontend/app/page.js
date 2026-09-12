@@ -14,6 +14,14 @@ import {
 } from "recharts";
 
 const TICKERS = ["BTC-USD", "ETH-USD", "AAPL", "GOOGL", "TSLA"];
+const GITHUB_URL = "https://github.com/ali-faraz-py/AetherQuant";
+
+const MODEL_INFO = {
+  Model: "XGBoost",
+  Accuracy: "66.81%",
+  Features: "24",
+  Training: "2 Years (BTC-USD, hourly)",
+};
 
 function formatTick(dt) {
   const [datePart, timePart] = dt.split(" ");
@@ -67,12 +75,31 @@ function SignalCard({ data }) {
       <p className="font-mono text-sm mt-1 opacity-80">
         Price: ${data.price.toLocaleString(undefined, { maximumFractionDigits: 2 })}
       </p>
+      <p className="font-mono text-xs mt-3 opacity-50">
+        As of {formatTick(data.as_of)}
+      </p>
 
       {!data.reliable && (
         <p className="font-mono text-xs mt-4 inline-block bg-accent-neutral/15 text-accent-neutral px-3 py-1 rounded-full">
           Model trained on BTC-USD only — less reliable for this asset
         </p>
       )}
+    </div>
+  );
+}
+
+function ModelInfoCard() {
+  return (
+    <div className="bg-surface rounded-2xl border border-hairline px-6 py-5">
+      <p className="font-display text-sm font-semibold mb-3">Model Info</p>
+      <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+        {Object.entries(MODEL_INFO).map(([key, value]) => (
+          <div key={key} className="flex justify-between col-span-2 font-mono text-sm">
+            <span className="opacity-60">{key}</span>
+            <span>{value}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -180,6 +207,15 @@ export default function Home() {
     <main className="flex-1 flex flex-col items-center px-6 py-16 md:py-20">
       <ThemeToggle />
 
+      <a
+        href={GITHUB_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed top-5 left-6 font-mono text-sm underline opacity-70 hover:opacity-100"
+      >
+        View on GitHub
+      </a>
+
       <div className="max-w-xl w-full text-center">
         <h1 className="font-display text-3xl md:text-4xl font-semibold">
           Market Brief
@@ -215,6 +251,7 @@ export default function Home() {
       {data && (
         <div className="w-full max-w-2xl flex flex-col gap-6 mt-10">
           <SignalCard data={data} />
+          <ModelInfoCard />
           <PriceChart history={data.history} />
           <RsiChart history={data.history} />
         </div>
