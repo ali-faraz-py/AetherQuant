@@ -57,6 +57,7 @@ def predict(ticker: str = Query(default="BTC-USD")):
     return {
         "ticker": ticker,
         "reliable": ticker == "BTC-USD",
+        "as_of": str(latest.index[0]),
         "signal": "BUY" if prediction == 1 else "SELL",
         "confidence": round(buy_confidence if prediction == 1 else 1 - buy_confidence, 4),
         "price": float(latest["Close"].values[0]),
